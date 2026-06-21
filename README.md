@@ -52,7 +52,19 @@ Applied to Google → confirmation email immediately ✅
 
 ## Architecture
 
-<img src="job_tracker_aws_architecture.png" width="100%" alt="Job Tracker AWS Architecture"/>
+User → CloudFront → S3
+         ↓
+    API Gateway
+         ↓
+      Lambda 1
+      ↓      ↓
+ DynamoDB   SES
+         ↓
+   Step Functions
+         ↓
+      Lambda 2
+         ↓
+        SES
 
 ## AWS Services Used
 
