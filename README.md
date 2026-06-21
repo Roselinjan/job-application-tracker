@@ -52,8 +52,7 @@ Applied to Google → confirmation email immediately ✅
 
 ## Architecture
 
-
-<img src="jobtracker_architecture.png" width="100%" alt="Job Tracker AWS Architecture"/>
+<img src="job_tracker_aws_architecture.png" width="100%" alt="Job Tracker AWS Architecture"/>
 
 ## AWS Services Used
 
