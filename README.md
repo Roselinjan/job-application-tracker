@@ -51,33 +51,9 @@ Applied to Google → confirmation email immediately ✅
 ---
 
 ## Architecture
-![Architecture](https://raw.githubusercontent.com/Roselinjan/job-application-tracker/main/architecture.svg)
-```
-User
-  ↓
-CloudFront (HTTPS + CDN + OAC)
-  ↓
-S3 (Private Static Website)
-  ↓
-API Gateway (REST API + CORS)
-  ↓
-Lambda 1 — jobtracker-save
-  ↓                    ↓
-DynamoDB          SES Confirmation Email
-(Save Application)
-  ↓
-Step Functions Workflow
-  ↓
-State 1: Wait N Days (dynamic — user chosen)
-  ↓
-State 2: Lambda 2 — jobtracker-reminder
-  ↓
-SES Follow Up Reminder Email
-  ↓
-CloudWatch (Logs + Monitoring)
-```
 
----
+
+<img src="jobtracker_architecture.png" width="100%" alt="Job Tracker AWS Architecture"/>
 
 ## AWS Services Used
 
