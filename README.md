@@ -52,7 +52,7 @@ Applied to Google → confirmation email immediately ✅
 
 ## Architecture
 
-User → CloudFront → S3
+User → CloudFront → S3 
          ↓
     API Gateway
          ↓
