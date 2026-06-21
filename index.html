@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Application Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:       #0A1628;
+      --navy-mid:   #112240;
+      --blue:       #1A56DB;
+      --blue-light: #3B82F6;
+      --steel:      #64748B;
+      --border:     #E2E8F0;
+      --bg:         #F8FAFC;
+      --white:      #FFFFFF;
+      --success:    #059669;
+      --error:      #DC2626;
+      --text:       #1E293B;
+      --text-muted: #64748B;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--navy);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--blue);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-icon svg { width: 18px; height: 18px; fill: white; }
+
+    .logo-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      letter-spacing: -0.01em;
+    }
+
+    .header-badge {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #93C5FD;
+      background: rgba(59,130,246,0.15);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(59,130,246,0.3);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(26,86,219,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 250px; height: 250px;
+      background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #93C5FD;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: rgba(147,197,253,0.4);
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: white;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span {
+      color: var(--blue-light);
+    }
+
+    .hero p {
+      font-size: 1rem;
+      color: #94A3B8;
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 24px rgba(10,22,40,0.06);
+      width: 100%;
+      max-width: 580px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 1.75rem 2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-header-icon {
+      width: 40px;
+      height: 40px;
+      background: #EFF6FF;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-header-icon svg { width: 20px; height: 20px; }
+
+    .card-header-text h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .card-header-text p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ── FORM ── */
+    form { padding: 1.75rem 2rem; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: 0.01em;
+    }
+
+    label .required {
+      color: var(--blue);
+      margin-left: 2px;
+    }
+
+    label .optional {
+      font-weight: 400;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      margin-left: 4px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+      appearance: none;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #CBD5E1;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(26,86,219,0.08);
+    }
+
+    input.error, select.error, textarea.error {
+      border-color: var(--error);
+      box-shadow: 0 0 0 3px rgba(220,38,38,0.06);
+    }
+
+    .field-error {
+      font-size: 0.72rem;
+      color: var(--error);
+      margin-top: 4px;
+      display: none;
+    }
+
+    .field-error.visible { display: block; }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+
+    /* Status colors */
+    select option[value="Applied"]    { color: #1A56DB; }
+    select option[value="Interview"]  { color: #7C3AED; }
+    select option[value="Offered"]    { color: #059669; }
+    select option[value="Rejected"]   { color: #DC2626; }
+
+    /* ── STATUS BADGE ── */
+    .status-hint {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.03em;
+    }
+
+    .badge-applied   { background: #EFF6FF; color: #1A56DB; }
+    .badge-interview { background: #F5F3FF; color: #7C3AED; }
+    .badge-offered   { background: #ECFDF5; color: #059669; }
+    .badge-rejected  { background: #FEF2F2; color: #DC2626; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0.5rem 0 1.25rem;
+    }
+
+    /* ── SUBMIT ── */
+    .submit-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      background: #1648C8;
+      box-shadow: 0 4px 12px rgba(26,86,219,0.3);
+    }
+
+    .submit-btn:active:not(:disabled) { transform: scale(0.99); }
+
+    .submit-btn:disabled {
+      background: #93C5FD;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── ALERT ── */
+    .alert {
+      display: none;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.825rem;
+      font-weight: 500;
+      margin-top: 1rem;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .alert.visible { display: flex; }
+
+    .alert-success {
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+    }
+
+    .alert-error {
+      background: #FEF2F2;
+      color: #991B1B;
+      border: 1px solid #FECACA;
+    }
+
+    .alert svg { flex-shrink: 0; margin-top: 1px; }
+
+    .alert-body { line-height: 1.5; }
+    .alert-title { font-weight: 600; margin-bottom: 2px; }
+    .alert-sub { font-weight: 400; font-size: 0.775rem; opacity: 0.85; }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .info-box svg { flex-shrink: 0; margin-top: 1px; }
+
+    .info-box p {
+      font-size: 0.78rem;
+      color: #1E40AF;
+      line-height: 1.5;
+    }
+
+    .info-box strong { font-weight: 600; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      text-align: center;
+      padding: 1.25rem;
+      font-size: 0.75rem;
+      color: #475569;
+    }
+
+    footer span { color: #64748B; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 520px) {
+      .form-row { grid-template-columns: 1fr; }
+      .stats-bar { gap: 1.5rem; }
+      .card-header, form { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .hero { padding: 2.5rem 1.25rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a class="logo" href="#">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+      </div>
+      <span class="logo-text">Job Application Tracker</span>
+    </a>
+    <span class="header-badge">Powered by AWS</span>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">Smart Job Tracking</div>
+    <h1>Track every application.<br/><span>Never miss a follow-up.</span></h1>
+    <p>Submit your application details once. Get a confirmation instantly and an automatic follow-up reminder after 7 days.</p>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-number">7</div>
+      <div class="stat-label">Day Reminder</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Serverless</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">AWS</div>
+      <div class="stat-label">Powered</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-header-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1A56DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div>
+        <div class="card-header-text">
+          <h2>Log New Application</h2>
+          <p>Fill in the details below — we'll handle the rest</p>
+        </div>
+      </div>
+
+      <form id="tracker-form" novalidate>
+
+        <div class="info-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <p><strong>How it works:</strong> Your application is saved to our database, you receive a confirmation email, and a <strong>7-day follow-up reminder</strong> is scheduled automatically.</p>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="company">Company Name <span class="required">*</span></label>
+            <input type="text" id="company" placeholder="e.g. Google" autocomplete="organization"/>
+            <div class="field-error" id="company-error">Please enter a company name</div>
+          </div>
+          <div class="form-group">
+            <label for="role">Job Role <span class="required">*</span></label>
+            <input type="text" id="role" placeholder="e.g. Cloud Engineer" />
+            <div class="field-error" id="role-error">Please enter a job role</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Your Email <span class="required">*</span></label>
+            <input type="email" id="email" placeholder="you@example.com" autocomplete="email"/>
+            <div class="field-error" id="email-error">Please enter a valid email</div>
+          </div>
+          <div class="form-group">
+            <label for="date">Date Applied <span class="required">*</span></label>
+            <input type="date" id="date" />
+            <div class="field-error" id="date-error">Please select the date applied</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="jobUrl">Job Posting URL <span class="required">*</span></label>
+          <input type="url" id="jobUrl" placeholder="https://careers.company.com/job-id" />
+          <div class="field-error" id="jobUrl-error">Please enter a valid URL</div>
+        </div>
+
+        <div class="form-group">
+          <label for="status">Application Status <span class="required">*</span></label>
+          <select id="status">
+            <option value="" disabled selected>Select current status</option>
+            <option value="Applied">Applied</option>
+            <option value="Interview">Interview Scheduled</option>
+            <option value="Offered">Offer Received</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+          <div class="status-hint">
+            <span class="badge badge-applied">Applied</span>
+            <span class="badge badge-interview">Interview</span>
+            <span class="badge badge-offered">Offered</span>
+            <span class="badge badge-rejected">Rejected</span>
+          </div>
+          <div class="field-error" id="status-error">Please select a status</div>
+        </div>
+
+        <div class="form-group">
+  <label for="reminderDays">Follow Up Reminder <span class="required">*</span></label>
+  <select id="reminderDays">
+    <option value="3">Remind me in 3 days</option>
+    <option value="5">Remind me in 5 days</option>
+    <option value="7" selected>Remind me in 7 days (recommended)</option>
+    <option value="14">Remind me in 14 days</option>
+    <option value="30">Remind me in 30 days</option>
+  </select>
+</div>
+
+        <div class="form-group">
+          <label for="notes">Notes <span class="optional">(optional)</span></label>
+          <textarea id="notes" placeholder="Recruiter name, referral, interview round details..."></textarea>
+        </div>
+
+        <hr class="divider"/>
+
+        <button type="submit" class="submit-btn" id="submit-btn">
+          <div class="spinner" id="spinner"></div>
+          <span id="btn-text">Save Application</span>
+        </button>
+
+        <div class="alert alert-success" id="alert-success" role="alert">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <div class="alert-body">
+            <div class="alert-title">Application saved successfully!</div>
+            <div class="alert-sub">Check your email for a confirmation. A follow-up reminder will be sent in 7 days.</div>
+          </div>
+        </div>
+
+        <div class="alert alert-error" id="alert-error" role="alert">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <div class="alert-body">
+            <div class="alert-title">Something went wrong</div>
+            <div class="alert-sub">Please check your details and try again.</div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>Job Application Tracker &nbsp;·&nbsp; Built by RoselinJanice &nbsp;·&nbsp; Powered by AWS Serverless</span>
+  </footer>
+
+  <script>
+    const form        = document.getElementById('tracker-form');
+    const submitBtn   = document.getElementById('submit-btn');
+    const btnText     = document.getElementById('btn-text');
+    const spinner     = document.getElementById('spinner');
+    const alertSuccess = document.getElementById('alert-success');
+    const alertError   = document.getElementById('alert-error');
+
+    // ── Set today's date as default ──
+    document.getElementById('date').valueAsDate = new Date();
+
+    // ── Validation helpers ──
+    function showError(fieldId, errorId) {
+      document.getElementById(fieldId).classList.add('error');
+      document.getElementById(errorId).classList.add('visible');
+    }
+
+    function clearError(fieldId, errorId) {
+      document.getElementById(fieldId).classList.remove('error');
+      document.getElementById(errorId).classList.remove('visible');
+    }
+
+    function clearAllErrors() {
+      [['company','company-error'],['role','role-error'],['email','email-error'],
+       ['date','date-error'],['jobUrl','jobUrl-error'],['status','status-error']]
+      .forEach(([f,e]) => clearError(f,e));
+    }
+
+    // ── Live clear on input ──
+    ['company','role','email','date','jobUrl','status'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        clearError(id, id + '-error');
+        alertSuccess.classList.remove('visible');
+        alertError.classList.remove('visible');
+      });
+    });
+
+    // ── Email regex ──
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const urlRe   = /^https?:\/\/.+\..+/;
+
+    // ── Form submit ──
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      clearAllErrors();
+      alertSuccess.classList.remove('visible');
+      alertError.classList.remove('visible');
+
+      const company = document.getElementById('company').value.trim();
+      const role    = document.getElementById('role').value.trim();
+      const email   = document.getElementById('email').value.trim();
+      const date    = document.getElementById('date').value;
+      const jobUrl  = document.getElementById('jobUrl').value.trim();
+      const status      = document.getElementById('status').value;
+      const reminderDays = document.getElementById('reminderDays').value;
+      const notes       = document.getElementById('notes').value.trim();
+      // Validate
+      let valid = true;
+      if (company.length < 2)          { showError('company','company-error'); valid = false; }
+      if (role.length < 2)             { showError('role','role-error');       valid = false; }
+      if (!emailRe.test(email))        { showError('email','email-error');     valid = false; }
+      if (!date)                       { showError('date','date-error');        valid = false; }
+      if (!urlRe.test(jobUrl))         { showError('jobUrl','jobUrl-error');   valid = false; }
+      if (!status)                     { showError('status','status-error');   valid = false; }
+      if (!valid) return;
+
+      // Loading state
+      submitBtn.disabled = true;
+      spinner.style.display = 'block';
+      btnText.textContent = 'Saving...';
+
+      try {
+        const API_URL = 'https://pu3jerpk0h.execute-api.ap-south-1.amazonaws.com/prod/applications';
+
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ company, role, email, date, jobUrl, status, reminderDays, notes })
+        });
+
+        if (!res.ok) throw new Error('API error');
+
+        alertSuccess.classList.add('visible');
+        form.reset();
+        document.getElementById('date').valueAsDate = new Date();
+
+      } catch (err) {
+        alertError.classList.add('visible');
+      } finally {
+        submitBtn.disabled = false;
+        spinner.style.display = 'none';
+        btnText.textContent = 'Save Application';
+      }
+    });
+  </script>
+</body>
+</html>
