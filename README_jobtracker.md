@@ -51,7 +51,7 @@ Applied to Google → confirmation email immediately ✅
 ---
 
 ## Architecture
-
+![Architecture](https://raw.githubusercontent.com/Roselinjan/job-application-tracker/main/architecture.svg)
 ```
 User
   ↓
