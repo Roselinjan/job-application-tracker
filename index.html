@@ -477,7 +477,14 @@
       </div>
       <span class="logo-text">Job Application Tracker</span>
     </a>
-    <span class="header-badge">Powered by AWS</span>
+    <div style="display:flex; align-items:center; gap:12px;">
+    <a href="/dashboard.html"
+     style="background:#1A56DB; color:white; text-decoration:none; padding:8px 14px; border-radius:8px; font-size:0.85rem; font-weight:600;">
+     View Dashboard
+    </a>
+
+  <span class="header-badge">Powered by AWS</span>
+</div>
   </header>
 
   <!-- HERO -->
@@ -685,6 +692,7 @@
       const status      = document.getElementById('status').value;
       const reminderDays = document.getElementById('reminderDays').value;
       const notes       = document.getElementById('notes').value.trim();
+      localStorage.setItem("userEmail", email);
       // Validate
       let valid = true;
       if (company.length < 2)          { showError('company','company-error'); valid = false; }
