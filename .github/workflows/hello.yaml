@@ -8,5 +8,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print Message
-        run: echo "Hello GitHub Actions!"
+      -  name: Check Node Version
+         run: node -v
