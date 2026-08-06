@@ -8,5 +8,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      -  name: Check Node Version
-         run: node -v
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Install Dependencies
+      working-directory: backend/save-application
+      run: npm install
