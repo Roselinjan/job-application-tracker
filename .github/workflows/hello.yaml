@@ -2,6 +2,9 @@ name: My First Workflow
 
 on:
   push:
+    paths:
+      - 'backend/save-application/**'
+      - '.github/workflows/hello.yaml'
 
 permissions:
   id-token: write
