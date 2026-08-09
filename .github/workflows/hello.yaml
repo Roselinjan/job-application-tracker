@@ -29,3 +29,7 @@ jobs:
     - name: Create Lambda ZIP
       working-directory: backend/save-application
       run: zip -r save-application.zip .
+
+    - name: Deploy to Lambda
+      working-directory: backend/save-application
+      run: aws lambda update-function-code --function-name jobtracker-save --zip-file fileb://save-application.zip
