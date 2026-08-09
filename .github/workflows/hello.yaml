@@ -1,0 +1,38 @@
+name: Deploy jobtracker-save Lambda
+
+on:
+  push:
+    paths:
+      - 'backend/save-application/**'
+      - '.github/workflows/hello.yaml'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+          role-to-assume: arn:aws:iam::847399098942:role/GitHubActionsJobTrackerDeployRole
+          aws-region: ap-south-1
+
+    - name: Install Dependencies
+      working-directory: backend/save-application
+      run: npm install
+
+    - name: Create Lambda ZIP
+      working-directory: backend/save-application
+      run: zip -r save-application.zip .
+
+    - name: Deploy to Lambda
+      working-directory: backend/save-application
+      run: aws lambda update-function-code --function-name jobtracker-save --zip-file fileb://save-application.zip
