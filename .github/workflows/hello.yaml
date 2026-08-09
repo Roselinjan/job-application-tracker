@@ -15,3 +15,7 @@ jobs:
     - name: Install Dependencies
       working-directory: backend/save-application
       run: npm install
+
+    - name: Create Lambda ZIP
+      working-directory: backend/save-application
+      run: zip -r save-application.zip .
